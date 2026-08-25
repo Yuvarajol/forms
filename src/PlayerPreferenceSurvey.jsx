@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import "./PlayerPreferenceSurvey.css";
 import blackLogo from "./black.png";
 // ...
@@ -34,7 +34,7 @@ const SPEND_OPTIONS = [
 
 const GROUP_SIZES = ["5–7 players", "8–10 players", "11–15 players", "16–20 players", "More than 20 players"];
 
-const API_URL = "/api/survey"; // adjust if backend is on a different host
+const API_URL = "https://script.google.com/macros/s/AKfycbytfqfpXAPIjPg6s3KRhBITXDH7e1KhBwEMoOom86pHqI7RpXuvSZ6Vnfa2tem-jRVN/exec"; // adjust if backend is on a different host
 
 const initialState = {
   full_name: "",
@@ -116,9 +116,14 @@ export default function PlayerPreferenceSurvey() {
     }
     setStatus({ state: "loading", message: "" });
     try {
-      await axios.post(API_URL, form);
-      setStatus({ state: "success", message: "Thanks! Your response has been recorded." });
-      setForm(initialState);
+      await fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
     } catch (e2) {
       setStatus({
         state: "error",

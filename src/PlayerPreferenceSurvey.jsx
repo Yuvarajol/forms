@@ -34,7 +34,7 @@ const SPEND_OPTIONS = [
 
 const GROUP_SIZES = ["5–7 players", "8–10 players", "11–15 players", "16–20 players", "More than 20 players"];
 
-const API_URL = "https://script.google.com/macros/s/AKfycbytfqfpXAPIjPg6s3KRhBITXDH7e1KhBwEMoOom86pHqI7RpXuvSZ6Vnfa2tem-jRVN/exec"; // adjust if backend is on a different host
+const API_URL = "https://script.google.com/macros/s/AKfycbxLcVV1Z8pFzqTxHqB8nEefMttbwaZ4gJAhwhI4EHAojDU7AMdXbHnNJK4j9UExo_jhCQ/exec"; // adjust if backend is on a different host
 
 const initialState = {
   full_name: "",
@@ -107,31 +107,32 @@ export default function PlayerPreferenceSurvey() {
     return null;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const err = validate();
-    if (err) {
-      setStatus({ state: "error", message: err });
-      return;
-    }
-    setStatus({ state: "loading", message: "" });
-    try {
-      await fetch(API_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-    } catch (e2) {
-      setStatus({
-        state: "error",
-        message: e2.response?.data?.error || "Something went wrong. Please try again.",
-      });
-    }
-  };
-
+          const handleSubmit = async (e) => {
+          e.preventDefault();
+          const err = validate();
+          if (err) {
+            setStatus({ state: "error", message: err });
+            return;
+          }
+          setStatus({ state: "loading", message: "" });
+          const start = performance.now();
+          try {
+            await fetch(API_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(form),
+            });
+            console.log("Submit took", performance.now() - start, "ms"); // remove after debugging
+            setStatus({ state: "success", message: "Thanks! Your response has been recorded." });
+            setForm(initialState);
+          } catch (e2) {
+            setStatus({
+              state: "error",
+              message: "Something went wrong. Please try again.",
+            });
+          }
+        };
   return (
     <div className="survey-page">
       <div className="survey-container">

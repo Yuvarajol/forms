@@ -21,6 +21,26 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+html, body {
+  overscroll-behavior-y: contain; /* kills the pull-to-refresh bounce */
+}
+
+.survey-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom); /* iOS notch/home-bar */
+  padding-top: env(safe-area-inset-top);
+}
+
+.survey-submit {
+  position: sticky;
+  bottom: 0;
+  /* fixed bottom action button = classic app pattern */
+}
+
+input, select, textarea, button {
+  font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
+}
 
 @keyframes pulseRing {
   0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.35); }

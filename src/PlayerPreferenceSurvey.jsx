@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import "./PlayerPreferenceSurvey.css";
 import blackLogo from "./black.png";
+import court1 from "./Court1.jpg";
+import court2 from "./Court2.jpg";
+import court3 from "./Court3.jpg";
+import court4 from "./Court4.jpg";
+
 // ...
 
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
+const backgrounds = [
+  court1,
+  court2,
+  court3,
+  court4,
+];
 const TIMES = [
   "00:00 - 03:00",
   "03:00 - 06:00",
@@ -17,6 +26,7 @@ const TIMES = [
   "18:00 - 21:00",
   "21:00 - 24:00",
 ];
+
 
 // const TURFS = [
 //   "Turf One 27", "Tiki Taka Velachery", "Kick N Scream Football Academy",
@@ -71,6 +81,14 @@ function getPrefilledState() {
 }
 
 export default function PlayerPreferenceSurvey() {
+  const [bgIndex, setBgIndex] = useState(0);
+  useEffect(() => {
+  const timer = setInterval(() => {
+    setBgIndex((prev) => (prev + 1) % backgrounds.length);
+  }, 5000);
+
+  return () => clearInterval(timer);
+}, []);
   const [form, setForm] = useState(getPrefilledState);
   const [status, setStatus] = useState({ state: "idle", message: "" });
 
@@ -151,6 +169,13 @@ export default function PlayerPreferenceSurvey() {
   return (
     <div className="survey-page">
       <div className="bg-grid"></div>
+      
+        <div
+          className="background-slider"
+          style={{
+            backgroundImage: `url(${backgrounds[bgIndex]})`,
+          }}
+        ></div>
       <div className="survey-container">
         
         <header className="survey-header">

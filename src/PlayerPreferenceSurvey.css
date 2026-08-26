@@ -547,3 +547,24 @@ textarea.survey-input {
   position: relative;
   z-index: 2;
 }
+.background-slider {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  z-index: 0;
+}
+
+.background-slider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.survey-container {
+  position: relative;
+  z-index: 2;
+}

@@ -1,168 +1,91 @@
 /* PlayerPreferenceSurvey.css
-   Professional sports-themed styling for the Dugout Sports survey form */
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes floatBall {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-14px) rotate(10deg); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes pulseRing {
-  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.35); }
-  70% { box-shadow: 0 0 0 10px rgba(22, 163, 74, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
-}
+   Dark theme redesign — Dugout Sports, matching reference mockups */
 
 * {
   box-sizing: border-box;
 }
 
 html, body {
-  overscroll-behavior-y: contain; /* kills the pull-to-refresh bounce on mobile */
+  overscroll-behavior-y: contain;
 }
 
-/* Page background: subtle turf/field texture + drifting sport icons */
+:root {
+  --bg: #0b0d10;
+  --card-bg: #14171b;
+  --card-border: #23272e;
+  --input-bg: #0f1114;
+  --input-border: #2a2f36;
+  --accent: #22c55e;
+  --accent-dim: #16a34a;
+  --text: #f4f6f8;
+  --text-dim: #9aa3ad;
+  --text-faint: #5b636c;
+}
+
 .survey-page {
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: calc(env(safe-area-inset-bottom) + 16px); /* iOS home-bar clearance */
-  background:
-    radial-gradient(circle at 15% 20%, rgba(34, 197, 94, 0.10) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(21, 128, 61, 0.12) 0%, transparent 45%),
-    repeating-linear-gradient(
-      90deg,
-      rgba(22, 163, 74, 0.05) 0px,
-      rgba(22, 163, 74, 0.05) 2px,
-      transparent 2px,
-      transparent 80px
-    ),
-    linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%);
-  padding: 40px 16px;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+  background: var(--bg);
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 40px;
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-}
-
-/* Floating decorative sport emoji layer */
-.survey-page::before,
-.survey-page::after {
-  content: "⚽";
-  position: fixed;
-  font-size: 64px;
-  opacity: 0.06;
-  pointer-events: none;
-  animation: floatBall 7s ease-in-out infinite;
-  z-index: 0;
-}
-
-.survey-page::before {
-  top: 8%;
-  left: 6%;
-  animation-delay: 0s;
-}
-
-.survey-page::after {
-  content: "🏏";
-  bottom: 10%;
-  right: 7%;
-  font-size: 72px;
-  animation-delay: 2.2s;
 }
 
 .survey-container {
   position: relative;
   z-index: 1;
-  max-width: 680px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
 /* Header */
 .survey-header {
-  background: linear-gradient(135deg, #15803d 0%, #16a34a 55%, #22c55e 100%);
-  background-size: 200% 200%;
-  animation: fadeInUp 0.6s ease both, shimmer 8s ease-in-out infinite;
-  border-radius: 16px;
-  padding: 32px 28px;
-  margin-bottom: 28px;
-  box-shadow: 0 10px 30px -10px rgba(21, 128, 61, 0.45);
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  text-align: center;
+  padding: 8px 8px 28px 8px;
+  margin-bottom: 20px;
 }
 
-.survey-header:hover {
-  box-shadow: 0 14px 36px -8px rgba(21, 128, 61, 0.55);
-}
-
-.survey-header::after {
-  content: "";
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 160px;
-  height: 160px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-}
-
-.survey-header::before {
-  content: "";
-  position: absolute;
-  bottom: -60px;
-  left: -30px;
-  width: 140px;
-  height: 140px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 50%;
+.survey-logo {
+  width: 72px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: none;
 }
 
 .survey-title {
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 8px 0;
-  position: relative;
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
 }
 
 .survey-subtitle {
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 14.5px;
+  color: var(--text-dim);
+  font-size: 13.5px;
   line-height: 1.6;
-  margin: 0;
-  max-width: 560px;
-  position: relative;
+  margin: 0 auto;
+  max-width: 480px;
 }
 
 .survey-badge {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 999px;
-  margin-bottom: 12px;
-  position: relative;
-  animation: pulseRing 2.4s ease-out infinite;
+  margin-bottom: 10px;
 }
 
 /* Form layout */
@@ -172,90 +95,94 @@ html, body {
   gap: 16px;
 }
 
-/* Card */
+/* Card = numbered section container */
 .survey-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 20px 22px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  animation: fadeInUp 0.5s ease both;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 22px 20px;
 }
-
-.survey-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.10);
-}
-
-.survey-card:focus-within {
-  border-color: #86efac;
-  box-shadow: 0 4px 16px -4px rgba(22, 163, 74, 0.18);
-  transform: translateY(-1px);
-}
-
-/* Stagger the card entrance animation */
-.survey-form .survey-card:nth-child(1) { animation-delay: 0.03s; }
-.survey-form .survey-card:nth-child(2) { animation-delay: 0.06s; }
-.survey-form .survey-card:nth-child(3) { animation-delay: 0.09s; }
-.survey-form .survey-card:nth-child(4) { animation-delay: 0.12s; }
-.survey-form .survey-card:nth-child(5) { animation-delay: 0.15s; }
-.survey-form .survey-card:nth-child(6) { animation-delay: 0.18s; }
-.survey-form .survey-card:nth-child(7) { animation-delay: 0.21s; }
-.survey-form .survey-card:nth-child(8) { animation-delay: 0.24s; }
-.survey-form .survey-card:nth-child(9) { animation-delay: 0.27s; }
-.survey-form .survey-card:nth-child(10) { animation-delay: 0.3s; }
 
 .survey-card-label {
   display: flex;
   align-items: baseline;
   gap: 6px;
   font-weight: 600;
-  font-size: 15px;
-  color: #1f2937;
-  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+/* Optional section-level heading style ("1. PROFILE DETAILS").
+   Add <p className="survey-section-title">1. PROFILE DETAILS</p>
+   as the first child inside a Card in JSX to get this look. */
+.survey-section-title {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 18px 0;
 }
 
 .survey-required {
-  color: #dc2626;
-  font-size: 14px;
+  color: var(--accent);
+  font-size: 13px;
 }
 
 .survey-hint {
-  font-size: 12.5px;
-  color: #9ca3af;
-  margin: 0 0 10px 0;
+  font-size: 12px;
+  color: var(--text-faint);
+  margin: -6px 0 10px 0;
 }
 
 .survey-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: 0;
+}
+
+/* Grid variant for short pill groups (activity, time slot) — add
+   className="survey-options survey-options-grid" in JSX for these Cards */
+.survey-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 10px;
+}
+
+/* Compact 7-across grid for day pills — add
+   className="survey-options survey-options-days" in JSX */
+.survey-options-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
 }
 
 /* Inputs */
 .survey-input {
   width: 100%;
-  border: 1.5px solid #d1d5db;
-  border-radius: 9px;
-  padding: 10px 13px;
-  font-size: 16px; /* iOS Safari auto-zooms inputs below 16px */
-  color: #111827;
+  border: 1.5px solid var(--input-border);
+  border-radius: 10px;
+  padding: 13px 14px;
+  font-size: 16px; /* prevents iOS auto-zoom */
+  color: var(--text);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-  background: #fafafa;
-  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--input-bg);
+}
+
+.survey-input::placeholder {
+  color: var(--text-faint);
 }
 
 .survey-input:hover {
-  border-color: #b0b7c3;
+  border-color: #3a4048;
 }
 
 .survey-input:focus {
-  border-color: #16a34a;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.14);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16);
 }
 
 textarea.survey-input {
@@ -264,150 +191,359 @@ textarea.survey-input {
   line-height: 1.5;
 }
 
-/* Radio / Checkbox rows */
+.survey-options-center .survey-option-row {
+  justify-content: center !important;
+  text-align: center;
+}
+/* Radio / Checkbox rendered as dark pills, matching mockups. */
 .survey-option-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 14px;
+  border: 1.5px solid var(--input-border);
+  border-radius: 999px;
   font-size: 14px;
-  color: #374151;
+  font-weight: 500;
+  color: var(--text);
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
-  background: white;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  background: var(--input-bg);
+  text-align: center;
 }
+
 
 .survey-option-row:hover {
-  background: #f0fdf4;
-  border-color: #22c55e;
-  transform: translateX(2px);
+  border-color: #454c56;
 }
 
-.survey-option-row:active {
-  transform: scale(0.98);
-}
-
+/* Hide the native input; the row itself becomes the selectable pill */
 .survey-option-row input[type="radio"],
 .survey-option-row input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  accent-color: #16a34a;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.15s ease;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.survey-option-row input:checked {
-  transform: scale(1.1);
+.survey-option-row:has(input:checked) {
+  border-color: var(--accent);
+  background: rgba(34, 197, 94, 0.14);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Squad-size / full-width single-column rows */
+.survey-options:not(.survey-options-grid):not(.survey-options-days) .survey-option-row {
+  border-radius: 12px;
+  justify-content: flex-start;
+  padding: 15px 16px;
+}
+
+/* Day pills (M T W T F S S) are compact + square-ish */
+.survey-options-days .survey-option-row {
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 10px;
 }
 
 /* Status messages */
 .survey-status {
   padding: 12px 14px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
-  animation: fadeInUp 0.3s ease both;
 }
 
 .survey-status.error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
 }
 
 .survey-status.success {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #15803d;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: var(--accent);
 }
 
 /* Submit button */
 .survey-submit {
   appearance: none;
   border: none;
-  background: linear-gradient(135deg, #16a34a, #15803d);
-  background-size: 160% 160%;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 13px 20px;
-  border-radius: 10px;
+  background: var(--accent);
+  color: #04140a;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 6px 16px -4px rgba(21, 128, 61, 0.45);
-  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease, background-position 0.4s ease;
+  transition: background 0.15s ease, opacity 0.2s ease, transform 0.1s ease;
   position: sticky;
   bottom: calc(env(safe-area-inset-bottom) + 12px);
   z-index: 5;
 }
 
 .survey-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px -4px rgba(21, 128, 61, 0.5);
-  background-position: 100% 0;
+  background: #34d874;
 }
 
 .survey-submit:active:not(:disabled) {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 .survey-submit:disabled {
-  opacity: 0.55;
+  background: #2a2f36;
+  color: var(--text-faint);
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .survey-footer-note {
   text-align: center;
-  font-size: 12.5px;
-  color: #9ca3af;
-  margin-top: 18px;
-}
-
-.survey-logo {
-  width: 100px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-}
-
-.survey-logo:hover {
-  transform: scale(1.04) rotate(-2deg);
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 16px;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
-  .survey-header {
-    padding: 24px 20px;
+  .survey-page {
+    padding-top: 28px;
   }
   .survey-title {
-    font-size: 21px;
+    font-size: 19px;
   }
   .survey-card {
-    padding: 16px 16px;
+    padding: 18px 16px;
   }
-  .survey-page::before,
-  .survey-page::after {
-    font-size: 40px;
+  .survey-options-grid {
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
   }
 }
 
-/* Respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .survey-page::before,
-  .survey-page::after,
-  .survey-header,
-  .survey-badge,
-  .survey-card {
-    animation: none !important;
-  }
   .survey-card,
   .survey-option-row,
   .survey-submit,
-  .survey-input,
-  .survey-logo {
+  .survey-input {
     transition: none !important;
   }
+}
+.survey-field-group {
+  margin-bottom: 20px;
+}
+ 
+.survey-field-group:last-child {
+  margin-bottom: 0;
+}
+ 
+.survey-field-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin: 0 0 10px 0;
+}
+/* Compact sizing overrides — append to the bottom of PlayerPreferenceSurvey.css.
+   Tightens padding, font sizes, and spacing across the dark redesign. */
+
+.survey-page {
+  padding-top: 24px;
+}
+
+.survey-title {
+  font-size: 18px;
+}
+
+.survey-subtitle {
+  font-size: 12.5px;
+}
+
+.survey-form {
+  gap: 12px;
+}
+
+.survey-card {
+  padding: 16px 14px;
+  border-radius: 14px;
+}
+
+.survey-section-title {
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+.survey-field-group {
+  margin-bottom: 14px;
+}
+
+.survey-field-label,
+.survey-card-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.survey-hint {
+  font-size: 11px;
+}
+
+.survey-input {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.survey-option-row {
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.survey-options:not(.survey-options-grid):not(.survey-options-days) .survey-option-row {
+  padding: 11px 14px;
+  border-radius: 10px;
+}
+
+.survey-options-days .survey-option-row {
+  padding: 9px 0;
+  font-size: 12px;
+}
+
+.survey-options,
+.survey-options-grid {
+  gap: 8px;
+}
+
+.survey-options-days {
+  gap: 5px;
+}
+
+.survey-submit {
+  padding: 13px 18px;
+  font-size: 13px;
+}
+
+.survey-footer-note {
+  font-size: 11px;
+}
+
+/* On phones, tighten further */
+@media (max-width: 480px) {
+  .survey-card {
+    padding: 14px 12px;
+  }
+  .survey-title {
+    font-size: 16px;
+  }
+}
+.survey-options-center .survey-option-row {
+  justify-content: center;
+}
+.survey-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34,197,94,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,197,94,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: moveGrid 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes moveGrid {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(40px);
+  }
+}
+/* ===== Animated Background ===== */
+
+.survey-page {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating green glow */
+.survey-page::before {
+  content: "";
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.18);
+  filter: blur(100px);
+  top: -150px;
+  left: -150px;
+  z-index: 0;
+  pointer-events: none;
+  animation: floatGlow1 12s ease-in-out infinite;
+}
+
+/* Second glow */
+.survey-page::after {
+  content: "";
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: rgba(22, 163, 74, 0.15);
+  filter: blur(100px);
+  bottom: -120px;
+  right: -120px;
+  z-index: 0;
+  pointer-events: none;
+  animation: floatGlow2 15s ease-in-out infinite;
+}
+
+@keyframes floatGlow1 {
+  0%,100% {
+    transform: translate(0,0);
+  }
+  50% {
+    transform: translate(120px,80px);
+  }
+}
+
+@keyframes floatGlow2 {
+  0%,100% {
+    transform: translate(0,0);
+  }
+  50% {
+    transform: translate(-100px,-60px);
+  }
+}
+
+/* Moving grid */
+.survey-page .bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.15;
+
+  background-image:
+    linear-gradient(rgba(34,197,94,.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,197,94,.3) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+  animation: moveGrid 10s linear infinite;
+}
+
+@keyframes moveGrid {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(50px);
+  }
+}
+
+.survey-container {
+  position: relative;
+  z-index: 2;
 }

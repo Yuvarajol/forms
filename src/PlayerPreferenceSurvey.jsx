@@ -18,33 +18,41 @@ const TIMES = [
   "21:00 - 24:00",
 ];
 
-const TURFS = [
-  "Turf One 27", "Tiki Taka Velachery", "Kick N Scream Football Academy",
-  "SSS Multi Sports Hub", "Strikerz Turf", "Turf 137", "Turf 360 Sports Academy",
-  "Namma Turf 91", "Soccer Nation Football Turf", "Spark Turf", "GO Futsal (Velachery)",
-  "Drive & Dash Turf", "Boundary Blitz Turf", "FC Marina Turf", "Soccer Zone Football Turf",
-  "FC Meena Turf", "Soccer Kingdom Football Turf", "Masters Indoor Turf", "T3 Turf",
-  "RSD Sports Guindy", "H & M Multi Sports Turf", "Counter Attack",
+// const TURFS = [
+//   "Turf One 27", "Tiki Taka Velachery", "Kick N Scream Football Academy",
+//   "SSS Multi Sports Hub", "Strikerz Turf", "Turf 137", "Turf 360 Sports Academy",
+//   "Namma Turf 91", "Soccer Nation Football Turf", "Spark Turf", "GO Futsal (Velachery)",
+//   "Drive & Dash Turf", "Boundary Blitz Turf", "FC Marina Turf", "Soccer Zone Football Turf",
+//   "FC Meena Turf", "Soccer Kingdom Football Turf", "Masters Indoor Turf", "T3 Turf",
+//   "RSD Sports Guindy", "H & M Multi Sports Turf", "Counter Attack",
+// ];
+
+// const SPEND_OPTIONS = [
+//   "Less than ₹500", "₹500 – ₹1,000", "₹1,001 – ₹2,000", "₹2,001 – ₹3,000",
+//   "₹3,001 – ₹5,000", "More than ₹5,000", "Not sure",
+// ];
+
+const GROUP_SIZES = [
+  "Less than 5 players",
+  "5–7 players",
+  "8–11 players",
+  "12–20 players",
+  "More than 20 players",
 ];
 
-const SPEND_OPTIONS = [
-  "Less than ₹500", "₹500 – ₹1,000", "₹1,001 – ₹2,000", "₹2,001 – ₹3,000",
-  "₹3,001 – ₹5,000", "More than ₹5,000", "Not sure",
-];
-
-const GROUP_SIZES = ["5–7 players", "8–10 players", "11–15 players", "16–20 players", "More than 20 players"];
-
-const API_URL = "https://script.google.com/macros/s/AKfycbxLcVV1Z8pFzqTxHqB8nEefMttbwaZ4gJAhwhI4EHAojDU7AMdXbHnNJK4j9UExo_jhCQ/exec"; // adjust if backend is on a different host
+const API_URL = "https://script.google.com/macros/s/AKfycby2PCObI3ie6lEqE6f29PeSx2rrbNQWfLgUXTMlmm08ZuXSUoXSioONftqMXk0o15udDA/exec"; // adjust if backend is on a different host
 
 const initialState = {
   full_name: "",
   mobile_number: "",
+  whatsapp_number: "",      // NEW
   sport: "",
   playing_day: [],
   playing_time: [],
   turf: [],
   monthly_spend: "",
   group_size: "",
+  target_rate: "",
   suggestions: "",
   share_more_info: "",
   location: "",
@@ -53,10 +61,17 @@ const initialState = {
   profession: "",
 };
 
-
+function getPrefilledState() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    ...initialState,
+    full_name: params.get("name")?.trim() || "",
+    mobile_number: params.get("phone")?.trim() || "",
+  };
+}
 
 export default function PlayerPreferenceSurvey() {
-  const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState(getPrefilledState);
   const [status, setStatus] = useState({ state: "idle", message: "" });
 
   const toggleArrayField = (field, value) => {
@@ -83,14 +98,14 @@ export default function PlayerPreferenceSurvey() {
     if (form.playing_time.length === 0)
       return "Please select at least one preferred playing time";
 
-    if (!form.monthly_spend)
-      return "Please select monthly turf spend";
+    // if (!form.monthly_spend)
+    //   return "Please select monthly turf spend";
 
     if (!form.suggestions.trim())
       return "Please add a suggestion (or write N/A)";
 
-    if (!form.share_more_info)
-      return "Please answer the last question";
+    // if (!form.share_more_info)
+    //   return "Please answer the last question";
 
     if (
       form.share_more_info ===
@@ -125,7 +140,7 @@ export default function PlayerPreferenceSurvey() {
             });
             console.log("Submit took", performance.now() - start, "ms"); // remove after debugging
             setStatus({ state: "success", message: "Thanks! Your response has been recorded." });
-            setForm(initialState);
+            setForm(getPrefilledState());
           } catch (e2) {
             setStatus({
               state: "error",
@@ -135,6 +150,7 @@ export default function PlayerPreferenceSurvey() {
         };
   return (
     <div className="survey-page">
+      <div className="bg-grid"></div>
       <div className="survey-container">
         
         <header className="survey-header">
@@ -145,64 +161,103 @@ export default function PlayerPreferenceSurvey() {
             alt="Dugout Sports"
             className="survey-logo"
           /> */}
-          <h1 className="survey-title"> Dugout Sports – Player Preference Survey</h1>
+          {/* <h1 className="survey-title"> Dugout Sports – Player Preference Survey</h1> */}
+          <h1 className="survey-title"> Dugout Sports </h1>
           <p className="survey-subtitle">
-            Thank you for being a valued Dugout Sports customer. We want to provide better playing
-            experiences, tournament updates, special offers, and preferred slot notifications based
-            on your interests. This survey takes less than 1 minute to complete.
+            Review Profile & Play Preferences
           </p>
         </header>
+        
 
         <form onSubmit={handleSubmit} className="survey-form">
-          <Card label="We Known You As ?" required>
-            <input
-              className="survey-input"
-              value={form.full_name}
-              onChange={(e) => setField("full_name", e.target.value)}
-              placeholder="Enter your full name"
-            />
-          </Card>
-          
+          <Section title="1. PROFILE DETAILS">
+            <div className="survey-field-group">
+              <div className="survey-field-label">
+                Full Name <span className="survey-required">*</span>
+              </div>
+              <input
+                className="survey-input"
+                value={form.full_name}
+                onChange={(e) => setField("full_name", e.target.value)}
+                placeholder="Enter your full name"
+              />
+            </div>
 
-          <Card label="Mobile Number" required>
-            <input
-              className="survey-input"
-              value={form.mobile_number}
-              onChange={(e) => setField("mobile_number", e.target.value)}
-              placeholder="10-digit mobile number"
-            />
-          </Card>
+            <div className="survey-field-group">
+              <div className="survey-field-label">
+                Phone Number <span className="survey-required">*</span>
+              </div>
+              <input
+                className="survey-input"
+                value={form.mobile_number}
+                onChange={(e) => setField("mobile_number", e.target.value)}
+                placeholder="10-digit mobile number"
+              />
+            </div>
 
-          <Card label="Which sport do you usually play?" required>
-            {["Cricket", "Football", "Both"].map((opt) => (
-              <Radio key={opt} name="sport" value={opt} checked={form.sport === opt}
-                onChange={() => setField("sport", opt)} />
-            ))}
-          </Card>
+            <div className="survey-field-group">
+              <div className="survey-field-label">
+                WhatsApp Number <span className="survey-required">*</span>
+              </div>
+              <input
+                className="survey-input"
+                value={form.whatsapp_number}
+                onChange={(e) => setField("whatsapp_number", e.target.value)}
+                placeholder="10-digit WhatsApp number"
+              />
+            </div>
 
-          <Card label="Preferred Playing Day" required hint="Select all that apply">
-            {DAYS.map((d) => (
-              <Checkbox key={d} label={d} checked={form.playing_day.includes(d)}
-                onChange={() => toggleArrayField("playing_day", d)} />
-            ))}
-          </Card>
+            <div className="survey-field-group">
+              <div className="survey-field-label">
+                Profession / Work <span className="survey-hint" style={{ display: "inline" }}>(Optional)</span>
+              </div>
+              <input
+                className="survey-input"
+                value={form.profession}
+                onChange={(e) => setField("profession", e.target.value)}
+                placeholder="e.g. IT, Corporate, Student"
+              />
+            </div>
+          </Section>
 
-          <Card
-                label="Preferred Playing Time"
-                required
-                hint="Select all preferred slots"
-              >
-                {TIMES.map((t) => (
-                  <Checkbox
-                    key={t}
-                    label={t}
-                    checked={form.playing_time.includes(t)}
-                    onChange={() => toggleArrayField("playing_time", t)}
-                  />
+          <Section title="2. PLAY PREFERENCES">
+              <Field label="Activity" required optionsClassName="survey-options-grid">
+                {["Box Cricket", "Football", "Event"].map((opt) => (
+                  <Radio key={opt} name="sport" value={opt} checked={form.sport === opt}
+                    onChange={() => setField("sport", opt)} />
                 ))}
-              </Card>
+              </Field>
 
-          <Card label="Which football turf / sports facility do you usually play at?" hint="Optional · select all that apply">
+              <Field label="Preferred Days" required optionsClassName="survey-options-days">
+                {DAYS.map((d) => (
+                  <Checkbox key={d} label={d[0]} checked={form.playing_day.includes(d)}
+                    onChange={() => toggleArrayField("playing_day", d)} />
+                ))}
+              </Field>
+
+              <Field label="Preferred Time Slot" required optionsClassName="survey-options-grid">
+                {TIMES.map((t) => (
+                  <Checkbox key={t} label={t} checked={form.playing_time.includes(t)}
+                    onChange={() => toggleArrayField("playing_time", t)} />
+                ))}
+              </Field>
+
+              <div className="survey-field-group">
+                <div className="survey-field-label">
+                  Target Rate / Hour (₹) <span className="survey-hint" style={{ display: "inline" }}>(Optional · Min ₹1,000)</span>
+                </div>
+                <input
+                  className="survey-input"
+                  type="number"
+                  min="1000"
+                  value={form.target_rate}
+                  onChange={(e) => setField("target_rate", e.target.value)}
+                  placeholder="e.g. 1200"
+                />
+              </div>
+            </Section>
+
+          {/* <Card label="Which football turf / sports facility do you usually play at?" hint="Optional · select all that apply">
             {TURFS.map((t) => (
               <Checkbox key={t} label={t} checked={form.turf.includes(t)}
                 onChange={() => toggleArrayField("turf", t)} />
@@ -214,14 +269,28 @@ export default function PlayerPreferenceSurvey() {
               <Radio key={s} name="monthly_spend" value={s} checked={form.monthly_spend === s}
                 onChange={() => setField("monthly_spend", s)} />
             ))}
-          </Card>
+          </Card> */}
 
-          <Card label="How many people are usually in your playing group?">
-            {GROUP_SIZES.map((g) => (
-              <Radio key={g} name="group_size" value={g} checked={form.group_size === g}
-                onChange={() => setField("group_size", g)} />
-            ))}
-          </Card>
+          <Section title="3. SQUAD DETAILS">
+            <Field label="Squad Size" required optionsClassName="survey-options-center">
+              {GROUP_SIZES.map((g) => (
+                <Radio key={g} name="group_size" value={g} checked={form.group_size === g}
+                  onChange={() => setField("group_size", g)} />
+              ))}
+            </Field>
+
+            <div className="survey-field-group">
+              <div className="survey-field-label">
+                Instagram Handle <span className="survey-hint" style={{ display: "inline" }}>(Optional)</span>
+              </div>
+              <input
+                className="survey-input"
+                value={form.instagram_link}
+                onChange={(e) => setField("instagram_link", e.target.value)}
+                placeholder="@username"
+              />
+            </div>
+          </Section>
 
           <Card label="Any suggestions for Dugout Sports?" required>
             <textarea
@@ -231,7 +300,7 @@ export default function PlayerPreferenceSurvey() {
               placeholder="Tell us what we can improve..."
             />
           </Card>
-          {form.share_more_info ===
+          {/* {form.share_more_info ===
               "Yes, I'd like to share more information" && (
               <Card label="Additional Information">
 
@@ -275,7 +344,7 @@ export default function PlayerPreferenceSurvey() {
               <Radio key={opt} name="share_more_info" value={opt} checked={form.share_more_info === opt}
                 onChange={() => setField("share_more_info", opt)} />
             ))}
-          </Card>
+          </Card> */}
 
           {status.state === "error" && (
             <div className="survey-status error">{status.message}</div>
@@ -300,14 +369,34 @@ export default function PlayerPreferenceSurvey() {
   );
 }
 
-function Card({ label, required, hint, children }) {
+function Card({ label, required, hint, children, optionsClassName = "" }) {
   return (
     <div className="survey-card">
       <div className="survey-card-label">
         {label} {required && <span className="survey-required">*</span>}
       </div>
       {hint && <p className="survey-hint">{hint}</p>}
-      <div className="survey-options">{children}</div>
+      <div className={`survey-options ${optionsClassName}`}>{children}</div>
+    </div>
+  );
+}
+function Section({ title, children }) {
+  return (
+    <div className="survey-card">
+      <div className="survey-section-title">{title}</div>
+      {children}
+    </div>
+  );
+}
+
+function Field({ label, required, hint, children, optionsClassName = "" }) {
+  return (
+    <div className="survey-field-group">
+      <div className="survey-field-label">
+        {label} {required && <span className="survey-required">*</span>}
+      </div>
+      {hint && <p className="survey-hint">{hint}</p>}
+      <div className={`survey-options ${optionsClassName}`}>{children}</div>
     </div>
   );
 }
